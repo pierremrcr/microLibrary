@@ -15,5 +15,8 @@ public interface LivreDao extends JpaRepository<Livre, Integer> {
 
      Livre save(Livre livre);
 
+    // void delete(int id);
+
+
 
 }

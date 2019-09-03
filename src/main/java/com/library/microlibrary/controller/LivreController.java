@@ -1,12 +1,14 @@
 package com.library.microlibrary.controller;
 
 import com.library.microlibrary.dao.LivreDao;
+import com.library.microlibrary.exceptions.LivreIntrouvableException;
 import com.library.microlibrary.model.Livre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -17,7 +19,6 @@ public class LivreController {
     private LivreDao livreDao;
 
     //Livres
-
     @GetMapping(value="Livres")
     public List<Livre> listeLivres() {
 
@@ -26,7 +27,7 @@ public class LivreController {
     }
 
     @PostMapping(value = "/Livres")
-    public ResponseEntity<Void> ajouterProduit(@RequestBody Livre livre) {
+    public ResponseEntity<Void> ajouterLivre(@Valid @RequestBody Livre livre) {
 
        Livre livre1 = livreDao.save(livre);
 
@@ -44,10 +45,26 @@ public class LivreController {
     }
 
     //Livres/{id}
-
     @GetMapping(value= "Livres/{id}")
-    public Livre afficherUnLivre(@PathVariable int id){
+    public Livre afficherUnLivre(@PathVariable int id) throws LivreIntrouvableException {
 
-        return livreDao.findById(id);
+        Livre livre = livreDao.findById(id);
+
+        if(livre == null) throw new LivreIntrouvableException("Le livre avec l'id " + id + " n'existe pas");
+
+        return livre;
+
+    }
+
+  //  @DeleteMapping (value = "/Livres/{id}")
+  //  public void supprimerLivre(@PathVariable int id) {
+
+  //      livreDao.delete(id);
+  //  }
+
+    @PutMapping (value = "/Livres")
+    public void updateLivre(@RequestBody Livre livre) {
+
+        livreDao.save(livre);
     }
 }

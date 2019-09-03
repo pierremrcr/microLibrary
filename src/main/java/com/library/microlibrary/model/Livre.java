@@ -1,9 +1,10 @@
 package com.library.microlibrary.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.text.SimpleDateFormat;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Livre {
@@ -11,10 +12,20 @@ public class Livre {
     @Id
     @GeneratedValue
     private int id;
+    @Column(name = "titre")
+    @Size(min = 1, max = 50)
     private String titre;
+    @Column(name = "auteur")
+    @Size(min = 1, max = 25)
     private String auteur;
+    @Column(name = "genre")
+    @Size(min = 1, max = 25)
     private String genre;
+    @Column(name = "date_publication")
+    @Size(min = 1, max = 15)
     private String date_publication;
+    @Column(name="resume")
+    @Size(min = 1, max = 2500)
     private String resume;
 
     public Livre(int id, String titre, String auteur, String genre, String date_publication, String resume) {
